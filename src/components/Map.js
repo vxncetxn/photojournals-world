@@ -6,7 +6,25 @@ import { geoEqualEarth, geoPath } from "d3-geo";
 import Tooltip from "../components/Tooltip";
 import countryShapes from "../../static/world-geojson.json";
 
-console.log(countryShapes.features);
+const setTooltipPosition = cursorCoords => {
+  let result = "to-left";
+  if (cursorCoords[0] < window.innerWidth / 2) {
+    result = "to-right";
+  }
+  if (
+    document.querySelector("#tooltip").offsetHeight / 2 >
+    cursorCoords[1] - 10
+  ) {
+    result = "to-bottom";
+  } else if (
+    cursorCoords[1] + document.querySelector("#tooltip").offsetHeight >
+    window.innerHeight - 10
+  ) {
+    result = "to-top";
+  }
+
+  return result;
+};
 
 const pointsData = [
   {
@@ -51,10 +69,91 @@ const pointsData = [
     coords: [118.0894, 24.4798],
     tag: "taiwanexchange",
     places: ["Xiamen", "Fuzhou"]
+  },
+  {
+    name: "Japan",
+    coords: [139.6503, 35.6762],
+    tag: "taiwanexchange",
+    places: ["Tokyo", "Kyoto", "Osaka", "Hokkaido"]
+  },
+  {
+    name: "Falkland Islands",
+    coords: [-59.5236, -51.7963],
+    tag: "taiwanexchange",
+    places: [
+      "Example1",
+      "Example2",
+      "Example3",
+      "Example4",
+      "Example5",
+      "Example6"
+    ]
+  },
+  {
+    name: "North Russia",
+    coords: [88.1893, 69.3558],
+    tag: "taiwanexchange",
+    places: [
+      "Example1",
+      "Example2",
+      "Example3",
+      "Example4",
+      "Example5",
+      "Example6",
+      "Example7",
+      "Example8",
+      "Example9"
+    ]
+  },
+  {
+    name: "Tasmania",
+    coords: [146.315918, -41.640079],
+    tag: "taiwanexchange",
+    places: [
+      "Example1",
+      "Example2",
+      "Example3",
+      "Example4",
+      "Example5",
+      "Example6",
+      "Example7",
+      "Example8",
+      "Example9"
+    ]
+  },
+  {
+    name: "Greenland",
+    coords: [-51.1, 69.21667],
+    tag: "taiwanexchange",
+    places: [
+      "Example1",
+      "Example2",
+      "Example3",
+      "Example4",
+      "Example5",
+      "Example6",
+      "Example7",
+      "Example8",
+      "Example9"
+    ]
+  },
+  {
+    name: "New York",
+    coords: [-73.935242, 40.73061],
+    tag: "taiwanexchange",
+    places: [
+      "Example1",
+      "Example2",
+      "Example3",
+      "Example4",
+      "Example5",
+      "Example6",
+      "Example7",
+      "Example8",
+      "Example9"
+    ]
   }
 ];
-
-// current good size: width 1400px, top 68px, left -400px
 
 let dimensions = {
   width: 1550,
@@ -135,23 +234,81 @@ const createD3Map = (wrapper, setTooltipDetails) => {
       }
     })
     .style("cursor", "pointer")
-    .on("mouseenter", function(d, i, n) {
+    .on("mouseenter", function(d) {
       select(this).attr("r", "7px");
       setTooltipDetails({
+        position: "to-right",
         tag: d.tag,
         name: d.name,
         places: d.places.join(", ")
       });
 
-      select("#tooltip")
-        .style("left", `${event.clientX - 430}px`)
-        .style(
-          "top",
-          `${event.clientY -
-            document.querySelector("#tooltip").offsetHeight / 2}px`
-        );
+      const tooltipPosition = setTooltipPosition([
+        event.clientX,
+        event.clientY
+      ]);
+      setTooltipDetails({
+        position: tooltipPosition,
+        tag: d.tag,
+        name: d.name,
+        places: d.places.join(", ")
+      });
+
+      switch (tooltipPosition) {
+        case "to-left":
+          select("#tooltip")
+            .style(
+              "left",
+              `${event.clientX -
+                430 -
+                document.querySelector("#tooltip").offsetWidth -
+                65}px`
+            )
+            .style(
+              "top",
+              `${event.clientY -
+                document.querySelector("#tooltip").offsetHeight / 2}px`
+            );
+          break;
+        case "to-bottom":
+          select("#tooltip")
+            .style(
+              "left",
+              `${event.clientX -
+                430 -
+                document.querySelector("#tooltip").offsetWidth / 2 -
+                30}px`
+            )
+            .style("top", `${event.clientY + 30}px`);
+          break;
+        case "to-top":
+          select("#tooltip")
+            .style(
+              "left",
+              `${event.clientX -
+                430 -
+                document.querySelector("#tooltip").offsetWidth / 2 -
+                30}px`
+            )
+            .style(
+              "top",
+              `${event.clientY -
+                document.querySelector("#tooltip").offsetHeight -
+                30}px`
+            );
+          break;
+        default:
+          select("#tooltip")
+            .style("left", `${event.clientX - 430}px`)
+            .style(
+              "top",
+              `${event.clientY -
+                document.querySelector("#tooltip").offsetHeight / 2}px`
+            );
+          break;
+      }
     })
-    .on("mouseleave", function(d, i, n) {
+    .on("mouseleave", function() {
       select(this).attr("r", "5px");
       setTooltipDetails(null);
     });
@@ -170,6 +327,7 @@ const MapComp = () => {
       <Map ref={d3MapRef} />
       {tooltipDetails ? (
         <Tooltip
+          position={tooltipDetails.position}
           tag={tooltipDetails.tag}
           name={tooltipDetails.name}
           places={tooltipDetails.places}

@@ -13,6 +13,7 @@ const Tooltip = styled.div`
   //   color: hsl(340, 60%, 51%);
   padding: 16px;
   border-radius: 5px;
+  z-index: 999;
 
   & > * + * {
     margin-top: 6px;
@@ -21,8 +22,18 @@ const Tooltip = styled.div`
   ::before {
     content: "";
     position: absolute;
-    bottom: 50%;
-    left: 0;
+    bottom: ${props =>
+      props.position === "to-top"
+        ? "0"
+        : props.position === "to-bottom"
+        ? "100%"
+        : "50%"};
+    left: ${props =>
+      props.position === "to-left"
+        ? "100%"
+        : props.position === "to-right"
+        ? "0"
+        : "50%"};
     width: 12px;
     height: 12px;
     background: #1b4b45;
@@ -31,13 +42,13 @@ const Tooltip = styled.div`
     border-left-color: transparent;
     transform: translate(-50%, 50%) rotate(45deg);
     transform-origin: center center;
-    z-index: 10;
+    z-index: 999;
   }
 `;
 
-const TooltipComp = ({ tag, name, places }) => {
+const TooltipComp = ({ position, tag, name, places }) => {
   return (
-    <Tooltip id="tooltip">
+    <Tooltip id="tooltip" position={position}>
       <div style={{ color: "hsl(340, 60%, 51%)" }}>{`#${tag}`}</div>
       <div>{`${name}: ${places}`}</div>
     </Tooltip>
