@@ -1,3 +1,15 @@
-import React from 'react';
+import React from "react";
 
-export default () => <div>Hello!</div>;
+import Defaults from "../components/Defaults";
+import Panel from "../components/Panel";
+import Map from "../components/Map";
+
+export default () => {
+  return (
+    <>
+      <Defaults />
+      <Panel />
+      <Map />
+    </>
+  );
+};
