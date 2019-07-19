@@ -27,7 +27,6 @@ const Defaults = createGlobalStyle`
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        vertical-align: top;
     }
 
     html {

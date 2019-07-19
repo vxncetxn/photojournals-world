@@ -12,6 +12,7 @@ const Panel = styled.div`
   justify-content: space-between;
   padding: 40px 50px 50px 50px;
   //   border: 1px solid red;
+  vertical-align: top;
 `;
 
 const PanelComp = () => {

@@ -4,6 +4,8 @@ import styled from "styled-components";
 const HeaderPanel = styled.div`
   display: inline-block;
   //   border: 1px solid gold;
+  display: flex;
+  flex-direction: column;
 `;
 
 const HeaderOne = styled.h1`
@@ -19,11 +21,9 @@ const HeaderOne = styled.h1`
 const SpanOne = styled.span`
   font-size: 5rem;
   color: var(--color-secondary);
-  vertical-align: baseline;
   //   border: 1px solid red;
 
   & span {
-    vertical-align: baseline;
     display: inline-block;
     border-bottom: 2px dashed var(--color-secondary);
     cursor: pointer;
@@ -34,9 +34,7 @@ const HeaderPanelComp = () => {
   return (
     <HeaderPanel>
       <HeaderOne>photo</HeaderOne>
-      <br />
       <HeaderOne>journals</HeaderOne>
-      <br />
       <HeaderOne>
         .dev,{" "}
         <SpanOne>
