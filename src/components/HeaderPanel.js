@@ -11,21 +11,21 @@ const HeaderOne = styled.h1`
   font-family: var(--font-secondary), sans-serif;
   font-size: 8rem;
   //   color: #6aa46a;
-  color: #5b955b;
+  color: var(--color-primary);
   line-height: 1.1;
   //   border-right: 2px solid red;
 `;
 
 const SpanOne = styled.span`
   font-size: 5rem;
-  color: #a46a6a;
+  color: var(--color-secondary);
   vertical-align: baseline;
   //   border: 1px solid red;
 
   & span {
     vertical-align: baseline;
     display: inline-block;
-    border-bottom: 2px dashed #a46a6a;
+    border-bottom: 2px dashed var(--color-secondary);
     cursor: pointer;
   }
 `;

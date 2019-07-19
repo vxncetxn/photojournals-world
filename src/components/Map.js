@@ -8,16 +8,6 @@ import countryShapes from "../../static/world-geojson.json";
 console.log(countryShapes.features);
 
 const pointsData = [
-  //   { name: "Zurich", coords: [8.5417, 47.3769], tag: "europe2k19" },
-  //   { name: "Lucerne", coords: [8.3093, 47.0502], tag: "europe2k19" },
-  //   { name: "Interlaken", coords: [7.8632, 46.6863], tag: "europe2k19" },
-  //   { name: "Grindelwald", coords: [8.0414, 46.6242], tag: "europe2k19" },
-  //   { name: "Lauterbrunnen", coords: [7.9091, 46.5935], tag: "europe2k19" },
-  //   { name: "Wroclaw", coords: [17.0385, 51.1079], tag: "europe2k19" },
-  //   { name: "Porto", coords: [8.6291, 41.1579], tag: "europe2k19" },
-  //   { name: "Taipei", coords: [121.5654, 25.033], tag: "taiwanexchange" },
-  //   { name: "Hong Kong", coords: [114.1694, 22.3193], tag: "taiwanexchange" },
-  //   { name: "Xiamen", coords: [118.0894, 24.4798], tag: "taiwanexchange" },
   { name: "Switzerland", coords: [8.2275, 46.8182], tag: "europe2k19" },
   { name: "Poland", coords: [19.1451, 51.9194], tag: "europe2k19" },
   { name: "Portugal", coords: [8.2245, 39.3999], tag: "europe2k19" },
@@ -76,26 +66,6 @@ const createD3Map = wrapper => {
     .attr("width", dimensions.boundedWidth)
     .attr("height", dimensions.boundedHeight);
 
-  // Draw data
-  //   const earth = bounds
-  //     .append("path")
-  //     .attr("class", "earth")
-  //     .attr("d", geoPathGenerator(sphere));
-
-  //   const graticule = bounds
-  //     .append("path")
-  //     .attr("class", "graticule")
-  //     .attr("d", geoPathGenerator(d3.geoGraticule10()));
-
-  //   const countries = bounds
-  //     .selectAll(".country")
-  //     .data(countryShapes.features)
-  //     .enter()
-  //     .append("path")
-  //     .attr("class", "country")
-  //     .attr("d", geoPathGenerator)
-  //     .attr("fill", "#e2e6e9");
-
   const countries = bounds
     .selectAll(".country")
     .data(countryShapes.features)
@@ -104,7 +74,9 @@ const createD3Map = wrapper => {
     .append("path")
     .attr("class", "country")
     .attr("d", geoPathGenerator)
-    .attr("fill", "#81b181");
+    .attr("fill", "var(--color-primary-light)")
+    .attr("stroke", "var(--color-temporary)")
+    .attr("stroke-width", 3);
 
   const points = bounds
     .selectAll(".point")
