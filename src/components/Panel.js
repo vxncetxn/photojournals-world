@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import InfoPanel from "./InfoPanel";
-import HeaderPanel from "./HeaderPanel";
+import EntriesList from "./EntriesList";
+import TitleSection from "./TitleSection";
 
 const Panel = styled.div`
   height: 100vh;
@@ -10,7 +10,7 @@ const Panel = styled.div`
   display: inline-flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 40px 50px 50px 50px;
+  padding: 50px;
   //   border: 1px solid red;
   vertical-align: top;
 `;
@@ -18,8 +18,8 @@ const Panel = styled.div`
 const PanelComp = () => {
   return (
     <Panel>
-      <InfoPanel />
-      <HeaderPanel />
+      <EntriesList />
+      <TitleSection />
     </Panel>
   );
 };

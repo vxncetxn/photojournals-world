@@ -1,24 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 
-const HeaderPanel = styled.div`
-  display: inline-block;
-  //   border: 1px solid gold;
+const TitleSection = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
+  //   border: 1px solid gold;
 `;
 
-const HeaderOne = styled.h1`
+const Title = styled.h1`
   display: inline;
   font-family: var(--font-secondary), sans-serif;
   font-size: 8rem;
-  //   color: #6aa46a;
   color: var(--color-primary);
   line-height: 1.1;
   //   border-right: 2px solid red;
 `;
 
-const SpanOne = styled.span`
+const TitleSpan = styled.span`
   font-size: 5rem;
   color: var(--color-secondary);
   //   border: 1px solid red;
@@ -30,19 +30,19 @@ const SpanOne = styled.span`
   }
 `;
 
-const HeaderPanelComp = () => {
+const TitleSectionComp = () => {
   return (
-    <HeaderPanel>
-      <HeaderOne>photo</HeaderOne>
-      <HeaderOne>journals</HeaderOne>
-      <HeaderOne>
+    <TitleSection>
+      <Title>photo</Title>
+      <Title>journals</Title>
+      <Title>
         .dev,{" "}
-        <SpanOne>
+        <TitleSpan>
           by <span>vance</span>.
-        </SpanOne>
-      </HeaderOne>
-    </HeaderPanel>
+        </TitleSpan>
+      </Title>
+    </TitleSection>
   );
 };
 
-export default HeaderPanelComp;
+export default TitleSectionComp;

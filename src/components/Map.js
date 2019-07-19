@@ -1,19 +1,57 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
-import { select } from "d3-selection";
+import { select, event } from "d3-selection";
 import { geoEqualEarth, geoPath } from "d3-geo";
 
+import Tooltip from "../components/Tooltip";
 import countryShapes from "../../static/world-geojson.json";
 
 console.log(countryShapes.features);
 
 const pointsData = [
-  { name: "Switzerland", coords: [8.2275, 46.8182], tag: "europe2k19" },
-  { name: "Poland", coords: [19.1451, 51.9194], tag: "europe2k19" },
-  { name: "Portugal", coords: [8.2245, 39.3999], tag: "europe2k19" },
-  { name: "Taiwan", coords: [120.9605, 23.6978], tag: "taiwanexchange" },
-  { name: "Hong Kong", coords: [114.1694, 22.3193], tag: "taiwanexchange" },
-  { name: "Xiamen", coords: [118.0894, 24.4798], tag: "taiwanexchange" }
+  {
+    name: "Switzerland",
+    coords: [8.2275, 46.8182],
+    tag: "europe2k19",
+    places: [
+      "Zurich",
+      "Lucerne",
+      "Interlaken",
+      "Grindelwald",
+      "Lauterbrunnen",
+      "Appenzell"
+    ]
+  },
+  {
+    name: "Poland",
+    coords: [19.1451, 51.9194],
+    tag: "europe2k19",
+    places: ["Wroclaw"]
+  },
+  {
+    name: "Portugal",
+    coords: [8.2245, 39.3999],
+    tag: "europe2k19",
+    places: ["Porto"]
+  },
+  {
+    name: "Taiwan",
+    coords: [120.9605, 23.6978],
+    tag: "taiwanexchange",
+    places: ["Taipei", "Hsinchu", "Kaoshiung"]
+  },
+  {
+    name: "Hong Kong",
+    coords: [114.1694, 22.3193],
+    tag: "taiwanexchange",
+    places: ["Hong Kong"]
+  },
+  {
+    name: "East China",
+    coords: [118.0894, 24.4798],
+    tag: "taiwanexchange",
+    places: ["Xiamen", "Fuzhou"]
+  }
 ];
 
 // current good size: width 1400px, top 68px, left -400px
@@ -48,7 +86,7 @@ const InlineComp = styled.div`
   position: relative;
   height: 100vh;
   //   border: 1px solid orange;
-  z-index: -1;
+  //   z-index: -1;
 `;
 
 const Map = styled.svg`
@@ -60,13 +98,14 @@ const Map = styled.svg`
   //   border: 1px solid blue;
 `;
 
-const createD3Map = wrapper => {
+const createD3Map = (wrapper, setTooltipDetails) => {
   const bounds = wrapper
     .append("g")
     .attr("width", dimensions.boundedWidth)
     .attr("height", dimensions.boundedHeight);
 
-  const countries = bounds
+  // countries
+  bounds
     .selectAll(".country")
     .data(countryShapes.features)
     .enter()
@@ -78,7 +117,8 @@ const createD3Map = wrapper => {
     .attr("stroke", "var(--color-temporary)")
     .attr("stroke-width", 3);
 
-  const points = bounds
+  // points
+  bounds
     .selectAll(".point")
     .data(pointsData)
     .enter()
@@ -93,19 +133,48 @@ const createD3Map = wrapper => {
       } else {
         return "hsl(220, 60%, 52%)";
       }
+    })
+    .style("cursor", "pointer")
+    .on("mouseenter", function(d, i, n) {
+      select(this).attr("r", "7px");
+      setTooltipDetails({
+        tag: d.tag,
+        name: d.name,
+        places: d.places.join(", ")
+      });
+
+      select("#tooltip")
+        .style("left", `${event.clientX - 430}px`)
+        .style(
+          "top",
+          `${event.clientY -
+            document.querySelector("#tooltip").offsetHeight / 2}px`
+        );
+    })
+    .on("mouseleave", function(d, i, n) {
+      select(this).attr("r", "5px");
+      setTooltipDetails(null);
     });
 };
 
 const MapComp = () => {
+  const [tooltipDetails, setTooltipDetails] = useState(null);
   const d3MapRef = useRef();
 
   useEffect(() => {
-    createD3Map(select(d3MapRef.current));
+    createD3Map(select(d3MapRef.current), setTooltipDetails);
   }, []);
 
   return (
     <InlineComp>
       <Map ref={d3MapRef} />
+      {tooltipDetails ? (
+        <Tooltip
+          tag={tooltipDetails.tag}
+          name={tooltipDetails.name}
+          places={tooltipDetails.places}
+        />
+      ) : null}
     </InlineComp>
   );
 };
